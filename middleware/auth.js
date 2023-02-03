@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
-const ValidateToken = (req, res, next) => {
+const validateToken = (req, res, next) => {
   const tokenAccess = req.header("token");
 
   if (!tokenAccess) {
@@ -13,9 +13,9 @@ const ValidateToken = (req, res, next) => {
       if (err) {
         return res.status(400).json({ message: err.message });
       }
-      const data = await User.findOne({ _id: decode.data });
-      if (data) {
-        req.User = data._id;
+      const user = await User.findOne({ _id: decode.data });
+      if (user) {
+        req.user = user._id;
         next();
       } else {
         res.json({ message: "failed" });
@@ -26,4 +26,4 @@ const ValidateToken = (req, res, next) => {
   }
 };
 
-module.exports = { ValidateToken };
+module.exports = { validateToken };

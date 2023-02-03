@@ -4,13 +4,13 @@ const User = require("../models/user");
 const cors = require("cors");
 router.use(cors());
 router.use(require("express").json());
-const { ValidateToken } = require("../middleware/auth");
+const { validateToken } = require("../middleware/auth");
 const bodyParser = require("body-parser");
 
 router.use(bodyParser.urlencoded({ extended: false }));
 router.use(bodyParser.json());
 
-router.post("/create", ValidateToken, cors(), async (req, res) => {
+router.post("/create", validateToken, cors(), async (req, res) => {
   try {
     let users = await Todo.find({ userId: req.user });
     if (users.length > 0) {
@@ -41,7 +41,7 @@ router.post("/create", ValidateToken, cors(), async (req, res) => {
   }
 });
 
-router.get("/user", ValidateToken, async (req, res) => {
+router.get("/user", validateToken, async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.user });
     res.status(200).json({
@@ -54,7 +54,7 @@ router.get("/user", ValidateToken, async (req, res) => {
   }
 });
 
-router.get("/allTodo", ValidateToken, async (req, res) => {
+router.get("/allTodo", validateToken, async (req, res) => {
   try {
     const users = await Todo.find({ userId: req.user });
     res.status(200).json({
